@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AppW4</string>
+    <string name="ErrorMsgAdd">Error when adding the information.</string>
+    <string name="ErrorMsgUpdate">Error when updating the information.</string>
+    <string name="ErrorMsgRemove">Error when deleting the information.</string>
+    <string name="ErrorMsgGetAll">Error when getting data list.</string>
+    <string name="ErrorMsgGetById">Error when gatting specific data.</string>
+    <string name="MsgDataNotFound">Data Not Found.</string>
+</resources>

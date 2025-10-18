@@ -1,0 +1,56 @@
+package Controller
+
+import Entity.Person
+import android.content.Context
+import com.example.appw4.R
+import data.IDataManager
+import data.MemoryDataManager
+
+class PersonController {
+    private var dataManager: IDataManager = MemoryDataManager
+    private lateinit var context: Context
+
+    constructor(context: Context){
+        this.context = context
+    }
+
+    fun addPerson(person: Person){
+        try {
+            dataManager.add(person)
+        }catch (e: Exception){
+            throw Exception(context.getString(R.string.ErrorMsgAdd))
+        }
+    }
+    fun updatePerson(person: Person){
+        try {
+            dataManager.update(person)
+        }catch (e: Exception){
+            throw Exception(context.getString(R.string.ErrorMsgUpdate))
+        }
+    }
+    fun removePerson(person: Person){
+
+    }
+    fun GetById(id: String): Person {
+        try {
+            val result = dataManager.getById(id)
+            if (result == null){
+                throw Exception(context.getString(R.string.MsgDataNotFound))
+            }
+            return result
+        }catch (e: Exception){
+            throw Exception(context.getString(R.string.ErrorMsgGetById))
+        }
+    }
+    fun GetByFullName(fullName: String): Person {
+        try {
+            val result = dataManager.getByFullName(fullName)
+            if (result == null){
+                throw Exception(context.getString(R.string.MsgDataNotFound))
+            }
+            return result
+        }catch (e: Exception){
+            throw Exception(context.getString(R.string.ErrorMsgGetById))
+        }
+    }
+}

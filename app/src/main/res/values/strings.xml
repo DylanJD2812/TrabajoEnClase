@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">AppW4</string>
+    <string name="ErrorMsgAdd">Error al agregar la información.</string>
+    <string name="ErrorMsgUpdate">Error al actualizar la información.</string>
+    <string name="ErrorMsgRemove">Error al eliminar la información</string>
+    <string name="ErrorMsgGetAll">Error al obtener la lista de datos.</string>
+    <string name="ErrorMsgGetById">Error al obtener dato especifico.</string>
+    <string name="MsgDataNotFound">El dato no fue encontrado</string>
+</resources>
