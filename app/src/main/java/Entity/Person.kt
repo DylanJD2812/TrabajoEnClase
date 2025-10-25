@@ -17,7 +17,9 @@ class Person {
     private var address: String=""
     private var latitude: Int=0
     private var longitude: Int=0
-    private var photo: Bitmap?
+    private var photo: Bitmap? = null
+
+    constructor()
 
     constructor(id: String,name: String,fLastName: String,
                 sLastName: String,phone: Int, email: String,
@@ -51,6 +53,10 @@ class Person {
     var FLastName: String
         get() = this.fLastName
         set(value){this.fLastName=value}
+
+    var SLastName: String
+        get() = this.sLastName
+        set(value){this.sLastName=value}
 
     var Phone: Int
         get() = this.phone

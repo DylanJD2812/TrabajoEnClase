@@ -6,4 +6,17 @@
     <string name="ErrorMsgGetAll">Error al obtener la lista de datos.</string>
     <string name="ErrorMsgGetById">Error al obtener dato especifico.</string>
     <string name="MsgDataNotFound">El dato no fue encontrado</string>
+    <string name="Addbtn_main">Agregar dato</string>
+    <string name="TextID">ID</string>
+    <string name="TextName">Nombre</string>
+    <string name="TextFLastname">Primer apellido</string>
+    <string name="TextSLastName">Segundo apellido</string>
+    <string name="TextEmail">Correo</string>
+    <string name="TextPhone">Teléfono</string>
+    <string name="TextBirthdate">Fecha de Nacimiento</string>
+    <string name="TextProvince">Provincia</string>
+    <string name="TextState">Canton</string>
+    <string name="TextDistrict">Distrito</string>
+    <string name="TextAddress">Direccion</string>
+    <string name="Savebtn_person">Guardar</string>
 </resources>
