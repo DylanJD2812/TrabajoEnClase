@@ -28,27 +28,29 @@ class PersonController {
             throw Exception(context.getString(R.string.ErrorMsgUpdate))
         }
     }
-    fun removePerson(person: Person){
-
-    }
-    fun GetById(id: String): Person {
+    fun removePerson(id: String){
         try {
             val result = dataManager.getById(id)
             if (result == null){
                 throw Exception(context.getString(R.string.MsgDataNotFound))
             }
-            return result
+            dataManager.remove(id)
+        }catch (e: Exception){
+            throw Exception(context.getString(R.string.ErrorMsgRemove))
+        }
+    }
+    fun GetById(id: String): Person? {
+        try {
+            return  dataManager.getById(id)
+
         }catch (e: Exception){
             throw Exception(context.getString(R.string.ErrorMsgGetById))
         }
     }
-    fun GetByFullName(fullName: String): Person {
+    fun GetByFullName(fullName: String): Person? {
         try {
-            val result = dataManager.getByFullName(fullName)
-            if (result == null){
-                throw Exception(context.getString(R.string.MsgDataNotFound))
-            }
-            return result
+            return dataManager.getByFullName(fullName)
+
         }catch (e: Exception){
             throw Exception(context.getString(R.string.ErrorMsgGetById))
         }
