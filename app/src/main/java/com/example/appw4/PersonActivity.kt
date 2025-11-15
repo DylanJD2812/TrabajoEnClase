@@ -3,8 +3,14 @@ package com.example.appw4
 import Controller.PersonController
 import Entity.Person
 import Entity.Province
+import Util.EXTRA_PERSON_ID
+import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -12,9 +18,11 @@ import android.view.View
 import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -43,6 +51,8 @@ class PersonActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
     private lateinit var menuItemDelete: MenuItem
 
+    private lateinit var imgPhoto: ImageView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -64,19 +74,21 @@ class PersonActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
         txtState=findViewById<EditText>(R.id.stateText)
         txtDistrict=findViewById<EditText>(R.id.districtText)
         txtAddress=findViewById<EditText>(R.id.addressText)
-
-
+        imgPhoto=findViewById<ImageView>(R.id.imgPhoto)
 
         ResetDate ()
+
+        val personId = intent.getStringExtra(EXTRA_PERSON_ID)
+        if(personId != null && personId.trim().length > 0) searchPerson(personId)
 
         val btnSelectDate = findViewById<ImageButton>(R.id.btnSelectDate_person)
         btnSelectDate.setOnClickListener(View.OnClickListener{view ->
             showDatePickerDialog()
         })
 
-        val btnSearch = findViewById<ImageButton>(R.id.btnSearchId_person)
-        btnSearch.setOnClickListener(View.OnClickListener{view ->
-            searchPerson(txtId.text.trim().toString())
+        val SelectPicture = findViewById<ImageButton>(R.id.btnSelectPicture)
+        SelectPicture.setOnClickListener(View.OnClickListener{view ->
+            takePhoto()
         })
 
     }
@@ -90,10 +102,11 @@ class PersonActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
     }
     private  fun searchPerson(id: String){
         try {
-            val person = personController.GetById(txtId.text.trim().toString())
+            val person = personController.GetById(id.trim().toString())
             if (person !=null){
                 isEditMode=true
                 txtId.isEnabled=false
+                txtId.setText(id)
                 txtName.setText(person.Name)
                 txtFLastName.setText(person.FLastName)
                 txtSLastName.setText(person.SLastName)
@@ -108,7 +121,8 @@ class PersonActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
                 year = person.Birthday.year
                 month = person.Birthday.month.value - 1
                 day = person.Birthday.dayOfMonth
-                menuItemDelete.isVisible = isEditMode
+                //menuItemDelete.isVisible = isEditMode
+                imgPhoto.setImageBitmap(person.Photo)
             }else{
                 Toast.makeText(this, R.string.MsgDataNotFound, Toast.LENGTH_LONG).show()
             }
@@ -120,6 +134,7 @@ class PersonActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
         isEditMode=false
         ResetDate()
         txtId.isEnabled=true
+        txtId.setText("")
         txtName.setText("")
         txtFLastName.setText("")
         txtSLastName.setText("")
@@ -129,8 +144,9 @@ class PersonActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
         txtState.setText("")
         txtDistrict.setText("")
         txtAddress.setText("")
+        lbBirthdate.setText("")
         invalidateOptionsMenu()
-
+        imgPhoto.setImageBitmap(null)
     }
     fun isValidationData(): Boolean{
         val dateparse = Util.Util.parseStringToDateModern(lbBirthdate.text.toString(), "dd/MM/yyyy")
@@ -200,6 +216,7 @@ class PersonActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
                     person.State = txtState.text.toString()
                     person.District = txtDistrict.text.toString()
                     person.Address= txtAddress.text.toString()
+                    person.Photo = (imgPhoto.drawable as BitmapDrawable).bitmap
 
                     if (!isEditMode)
                         personController.addPerson(person)
@@ -254,6 +271,45 @@ class PersonActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    //Here start the methods to select a phone from the camera or gallery
+    private val cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success: Boolean ->
+        if (success) {
+            // Image captured successfully, handle the result (e.g., display it in an ImageView)
+            // The image is typically saved to the URI provided in the launch() call.
+        } else {
+            // Image capture failed or was cancelled
+        }
+    }
+
+    private val cameraPreviewLauncher = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap: Bitmap? ->
+        if (bitmap != null) {
+            imgPhoto.setImageBitmap(bitmap)
+        } else {
+            // Image capture failed or was cancelled
+        }
+    }
+
+    private val selectImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data: Intent? = result.data
+            // Handle the selected image URI here
+            data?.data?.let { imageUri ->
+                imgPhoto.setImageURI(imageUri)
+            }
+        }
+    }
+
+    fun takePhoto(){
+        cameraPreviewLauncher.launch(null)
+    }
+
+    fun selectPhoto(){
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+        intent.type = "image/*"
+        selectImageLauncher.launch(intent)
+    }
+
 
 }
 

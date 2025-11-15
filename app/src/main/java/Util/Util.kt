@@ -12,12 +12,13 @@ import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Locale
 
+const val EXTRA_PERSON_ID="com.example.appw4.PersonID"
 class Util {
     companion object{
         fun openActivity(context: Context
-                         , objClass: Class<*>){
+                         , objClass: Class<*>, key: String="",value: String?=null){
             val intent= Intent(context
-                , objClass)
+                , objClass).apply { putExtra(key,value) }
             context.startActivity(intent)
         }
 

@@ -23,5 +23,10 @@ class MainActivity : AppCompatActivity() {
         btnopenactivity.setOnClickListener(View.OnClickListener{ view ->
             Util.Util.openActivity(this, PersonActivity::class.java)
         })
+
+        val btnPeopleList= findViewById<Button>(R.id.btnPeopleList_main)
+        btnPeopleList.setOnClickListener(View.OnClickListener{ view ->
+            Util.Util.openActivity(this, PeopleListActivity::class.java)
+        })
     }
 }

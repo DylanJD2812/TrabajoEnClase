@@ -55,4 +55,5 @@ class PersonController {
             throw Exception(context.getString(R.string.ErrorMsgGetById))
         }
     }
+    fun getPeople() = dataManager.getAll()
 }

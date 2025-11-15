@@ -27,11 +27,6 @@
                 android:ems="10"
                 android:inputType="text" />
 
-            <ImageButton
-                android:id="@+id/btnSearchId_person"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@android:drawable/ic_menu_search" />
         </TableRow>
 
         <TableRow
@@ -229,6 +224,21 @@
                 android:inputType="textMultiLine" />
 
         </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
 
+            <ImageButton
+                android:id="@+id/btnSelectPicture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@android:drawable/ic_menu_camera" />
+
+            <ImageView
+                android:id="@+id/imgPhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:srcCompat="@tools:sample/avatars" />
+        </TableRow>
     </TableLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
